@@ -16,3 +16,10 @@
  
  set(INSTALL_LIB_DIR     lib${LIBSUFFIX} CACHE PATH "Installation directory for libraries")
  mark_as_advanced(INSTALL_LIB_DIR)
+@@ -603,5 +603,5 @@
+ target_link_libraries(cstool ${default-target})
+ 
+ install(TARGETS cstool DESTINATION bin)
+-install(FILES ${CMAKE_BINARY_DIR}/capstone.pc DESTINATION lib/pkgconfig)
++install(FILES ${CMAKE_BINARY_DIR}/capstone.pc DESTINATION lib${LIBSUFFIX}/pkgconfig)
+ endif ()
