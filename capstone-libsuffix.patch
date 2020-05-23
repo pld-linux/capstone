@@ -1,0 +1,18 @@
+--- capstone-4.0.1/CMakeLists.txt.orig	2020-05-23 20:26:01.339972482 +0200
++++ capstone-4.0.1/CMakeLists.txt	2020-05-23 20:31:02.661673415 +0200
+@@ -574,14 +574,7 @@
+ source_group("Include\\M680X" FILES ${HEADERS_MC680X})
+ source_group("Include\\EVM" FILES ${HEADERS_EVM})
+ 
+-### test library 64bit routine:
+-get_property(LIB64 GLOBAL PROPERTY FIND_LIBRARY_USE_LIB64_PATHS)
+-
+-if (NOT APPLE AND "${LIB64}" STREQUAL "TRUE")
+-    set(LIBSUFFIX 64)
+-else()
+-    set(LIBSUFFIX "")
+-endif()
++set(LIBSUFFIX "${LIB_SUFFIX}")
+ 
+ set(INSTALL_LIB_DIR     lib${LIBSUFFIX} CACHE PATH "Installation directory for libraries")
+ mark_as_advanced(INSTALL_LIB_DIR)
