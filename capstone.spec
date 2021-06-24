@@ -5,15 +5,14 @@
 Summary:	Capstone engine - dissassembly framework
 Summary(pl.UTF-8):	Silnik Capstone - szkielet do disasemblacji
 Name:		capstone
-Version:	4.0.1
+Version:	4.0.2
 Release:	1
 License:	BSD
 Group:		Libraries
 #Source0Download: https://github.com/aquynh/capstone/releases
 Source0:	https://github.com/aquynh/capstone/archive/%{version}/%{name}-%{version}.tar.gz
-# Source0-md5:	1b0a9a0d50d9515dcf7684ce0a2270a4
+# Source0-md5:	8894344c966a948f1248e66c91b53e2c
 Patch0:		%{name}-shared.patch
-Patch1:		%{name}-libsuffix.patch
 URL:		http://www.capstone-engine.org/
 BuildRequires:	cmake >= 2.6
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -88,7 +87,7 @@ Biblioteka statyczna disasemblera Capstone.
 %prep
 %setup -q
 %patch0 -p1
-%patch1 -p1
+#%%patch1 -p1
 
 %build
 install -d build
