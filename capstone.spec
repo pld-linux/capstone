@@ -15,6 +15,7 @@ Source0:	https://github.com/aquynh/capstone/archive/%{version}/%{name}-%{version
 Patch0:		%{name}-shared.patch
 URL:		http://www.capstone-engine.org/
 BuildRequires:	cmake >= 2.6
+BuildRequires:	rpmbuild(macros) >= 1.605
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
