@@ -5,16 +5,15 @@
 Summary:	Capstone engine - dissassembly framework
 Summary(pl.UTF-8):	Silnik Capstone - szkielet do disasemblacji
 Name:		capstone
-Version:	4.0.2
+Version:	5.0.1
 Release:	1
 License:	BSD
 Group:		Libraries
 #Source0Download: https://github.com/aquynh/capstone/releases
 Source0:	https://github.com/aquynh/capstone/archive/%{version}/%{name}-%{version}.tar.gz
-# Source0-md5:	8894344c966a948f1248e66c91b53e2c
-Patch0:		%{name}-shared.patch
+# Source0-md5:	2f813b8bedd40be5fd7327d51fc101dc
 URL:		http://www.capstone-engine.org/
-BuildRequires:	cmake >= 2.6
+BuildRequires:	cmake >= 3.15
 BuildRequires:	rpmbuild(macros) >= 1.605
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -87,18 +86,27 @@ Biblioteka statyczna disasemblera Capstone.
 
 %prep
 %setup -q
-%patch0 -p1
 
 %build
-install -d build
-cd build
-%cmake .. \
-	%{!?with_static_libs:-DCAPSTONE_BUILD_STATIC=OFF}
+%if %{with static_libs}
+%cmake -B build-static \
+	-DBUILD_SHARED_LIBS=OFF \
+	-DCAPSTONE_BUILD_CSTOOL=OFF
 
-%{__make}
+%{__make} -C build-static
+%endif
+
+%cmake -B build
+
+%{__make} -C build
 
 %install
 rm -rf $RPM_BUILD_ROOT
+
+%if %{with static_libs}
+%{__make} -C build-static install \
+	DESTDIR=$RPM_BUILD_ROOT
+%endif
 
 %{__make} -C build install \
 	DESTDIR=$RPM_BUILD_ROOT
@@ -111,15 +119,16 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc CREDITS.TXT ChangeLog LICENSE.TXT LICENSE_LLVM.TXT README.md SPONSORS.TXT TODO
+%doc CREDITS.TXT ChangeLog LICENSE.TXT LICENSE_LLVM.TXT README.md SPONSORS.TXT
 %attr(755,root,root) %{_bindir}/cstool
-%attr(755,root,root) %{_libdir}/libcapstone.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libcapstone.so.4
+%attr(755,root,root) %{_libdir}/libcapstone.so.*.*
+%attr(755,root,root) %ghost %{_libdir}/libcapstone.so.5
 
 %files devel
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libcapstone.so
 %{_includedir}/capstone
+%{_libdir}/cmake/capstone
 %{_pkgconfigdir}/capstone.pc
 
 %if %{with static_libs}
